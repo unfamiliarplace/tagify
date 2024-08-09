@@ -3,7 +3,7 @@ from prompts.prompts import PromptFlows as pf
 from pathlib import Path
 import csv
 
-SEP = ';'
+SEP = '|'
 PATH_OUT = Path('output')
 
 def get_track_details(ask_artist: bool=True) -> tuple[str, str]:
