@@ -19,13 +19,13 @@ def get_track_details(ask_artist: bool=True) -> tuple[str, str]:
     return (title, artist)
 
 def do_album() -> None:
-    album = p.str('Album title', allow_blank=True)
     aa = p.str('Album artist', allow_blank=True)
-    da = aa
+    album = p.str('Album title', allow_blank=True)
 
     aa_for_all = p.bool('Album artist = artist for all tracks (default Y)', strict=True, allow_blank=True)
     kwargs = {'ask_artist': not aa_for_all}
 
+    da = aa
     if not aa_for_all:
         da = p.str('Default track artist (blank = use album artist)', allow_blank=True)
         if not da:
