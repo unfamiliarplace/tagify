@@ -20,16 +20,21 @@ def get_track_details(ask_artist: bool=True) -> tuple[str, str]:
 
 def do_album() -> None:
     aa = p.str('Album artist', allow_blank=True)
-    album = p.str('Album title', allow_blank=True)
-
-    aa_for_all = p.bool('Album artist = artist for all tracks (default Y)', strict=True, allow_blank=True)
-    kwargs = {'ask_artist': not aa_for_all}
 
     da = aa
-    if not aa_for_all:
+    kwargs = {'ask_artist': False}
+
+    album = p.str('Album title', allow_blank=True)
+
+    aa_for_all = p.bool('Use album artist as artist for all tracks (default Y)', strict=True, allow_blank=True)
+    if not aa_for_all:        
         da = p.str('Default track artist (blank = use album artist)', allow_blank=True)
         if not da:
             da = aa
+
+        one_ta = p.bool('Same artist for all tracks (default Y)', strict=True, allow_blank=True)
+        if not one_ta:
+            kwargs['ask_artist'] = True
 
     year = p.int('Year', allow_blank=True)
 
