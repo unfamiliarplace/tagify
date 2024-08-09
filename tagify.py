@@ -32,6 +32,9 @@ def do_album() -> None:
 
         rows.append([aa, ta, album, year, i + 1, track])
 
+    if not Path.exists(PATH_OUT):
+        PATH_OUT.mkdir(parents=True, exist_ok=True)
+
     path = PATH_OUT / f'{aa} - {album}.csv'
     with open(path, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter=';', quoting=csv.QUOTE_MINIMAL)
