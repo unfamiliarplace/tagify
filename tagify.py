@@ -64,8 +64,10 @@ def do_album() -> None:
             writer.writerow(row)
 
     # LOL have to remove the final newline for mp3tag to like it
+    with open(path, 'r', encoding='utf-8') as f:
+        contents = f.read()[:-1]
     with open(path, 'w', encoding='utf-8', newline='') as f:
-        f.write(f.read()[:-1])
+        f.write(contents)
 
     print(f'Saved album to {path}')
     print()
