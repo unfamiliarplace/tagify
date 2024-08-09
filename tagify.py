@@ -7,8 +7,11 @@ SEP = ';'
 PATH_OUT = Path('output')
 
 def do_track() -> None:
-    title = p.str('Track title', allow_blank=True)
-    artist = p.str('Track artist (blank to use default)', allow_blank=True)
+    title = p.str('Track title (blank = stop)', allow_blank=True)
+    if not title:
+        return None
+    
+    artist = p.str('Track artist (blank = use default)', allow_blank=True)
     return (title, artist)
 
 def do_album() -> None:
@@ -19,7 +22,8 @@ def do_album() -> None:
         da = aa
     year = p.int('Year', allow_blank=True)
 
-    tracks = pf.loop(do_track, do_while=True)
+    tracks = pf.loop(do_track, do_while=True, ask_continue=False, count=True)
+    print()
 
     rows = []
     for (i, (track, ta)) in enumerate(tracks):
@@ -35,6 +39,7 @@ def do_album() -> None:
             writer.writerow(row)
 
     print(f'Saved album to {path}')
+    print()
 
 if __name__ == '__main__':
     pf.until_quit(do_album, do_while=True, continue_string='do an album')
