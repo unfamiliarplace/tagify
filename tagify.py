@@ -6,24 +6,41 @@ import csv
 SEP = ';'
 PATH_OUT = Path('output')
 
-def do_track() -> None:
+def get_track_details(ask_artist: bool=True) -> tuple[str, str]:
     title = p.str('Track title (blank = stop)', allow_blank=True)
     if not title:
         return None
     
-    artist = p.str('Track artist (blank = use default)', allow_blank=True)
+    if ask_artist:
+        artist = p.str('Track artist (blank = use default)', allow_blank=True)
+    else:
+        artist = ''
+
     return (title, artist)
 
 def do_album() -> None:
     album = p.str('Album title', allow_blank=True)
     aa = p.str('Album artist', allow_blank=True)
-    da = p.str('Default track artist (blank = use album artist)', allow_blank=True)
-    if not da:
-        da = aa
+    da = aa
+
+    aa_for_all = p.bool('Album artist = artist for all tracks (default Y)', strict=True, allow_blank=True)
+    kwargs = {'ask_artist': not aa_for_all}
+
+    if not aa_for_all:
+        da = p.str('Default track artist (blank = use album artist)', allow_blank=True)
+        if not da:
+            da = aa
+
     year = p.int('Year', allow_blank=True)
 
-    tracks = pf.loop(do_track, do_while=True, ask_continue=False, count=True)
     print()
+    tracks = pf.loop(get_track_details, kwargs=kwargs, do_while=True, ask_continue=False, count=True, between=print)
+    print()
+
+    if not tracks:
+        print('No tracks entered')
+        print()
+        return
 
     rows = []
     for (i, (track, ta)) in enumerate(tracks):
@@ -45,4 +62,4 @@ def do_album() -> None:
     print()
 
 if __name__ == '__main__':
-    pf.until_quit(do_album, do_while=True, continue_string='do an album')
+    pf.until_quit(do_album, do_while=True, continue_string='do another album', between=print)
