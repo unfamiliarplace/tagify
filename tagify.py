@@ -38,7 +38,7 @@ def do_album() -> None:
     print()
 
     if not tracks:
-        print('No tracks entered')
+        print('No tracks entered; album not saved')
         print()
         return
 
