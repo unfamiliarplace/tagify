@@ -59,7 +59,7 @@ def do_album() -> None:
 
     path = PATH_OUT / f'{aa} - {album}.csv'
     with open(path, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.writer(f, delimiter=SEP, quoting=csv.QUOTE_NONE, escapechar='\\')
+        writer = csv.writer(f, delimiter=SEP, quoting=csv.QUOTE_MINIMAL, quotechar='^')
         for row in rows:
             writer.writerow(row)
 
